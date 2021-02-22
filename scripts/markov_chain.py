@@ -1,5 +1,4 @@
 import numpy as np
-from scripts import transition
 
 
 class MarkovChain:

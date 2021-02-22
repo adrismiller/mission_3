@@ -28,7 +28,7 @@ class ImgGenerator():
             filename = s.name + ".jpeg"
             img_path = os.path.join(self.input_dir, filename)
             img = cv2.imread(img_path)
-            img = cv2.resize(img, (100, 100))
+            img = cv2.resize(img, (300, 300))
             all_imgs.append(img)
 
         return all_imgs
