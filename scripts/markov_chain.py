@@ -54,12 +54,12 @@ class MarkovChain:
 
         """
 
-        sequence = [] # intialize empty sequence
-        current_state = self.get_initial_state() # randomly select initial state
+        sequence = []  # initialize empty sequence
+        current_state = self.get_initial_state()  # randomly select initial state
 
         for i in range(sequence_length):
             sequence.append(current_state)
-            next_state = self.get_new_state(current_state) # randomly select next state
+            next_state = self.get_new_state(current_state)  # randomly select next state
             current_state = next_state
 
         return sequence

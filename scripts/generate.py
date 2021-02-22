@@ -86,7 +86,7 @@ class ImgGenerator:
         # TODO : add check for dimensions of picture being good
 
         index = 0
-        # retrieve an accesible list of image objects that will be used
+        # retrieve a list of image objects that will be used
         all_imgs = self.get_all_imgs()
         all_rows = []
         # create num_rows rows
