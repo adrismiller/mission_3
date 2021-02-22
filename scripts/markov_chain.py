@@ -1,4 +1,5 @@
 import numpy as np
+from scripts import transition
 
 
 class MarkovChain:
@@ -7,13 +8,33 @@ class MarkovChain:
 
     """
 
-    def __init__(self, initial_state, states, transition):
-        self.initial_state = initial_state
+    def __init__(self, states, prior, transition):
         self.states = states
+        self.prior = prior
         self.transition = transition
         self.num_states = len(states)
 
-    def generate(self, sequence_length):
+    def get_initial_state(self):
+        """
+
+        :return:
+        """
+        return np.random.choice(a=self.states, p=self.prior)
+
+    # TODO: make this higher order ???
+
+    def get_new_state(self, current_state):
+        """
+
+        :param State current_state:
+        :return: State new_state:
+        """
+        current_state_id = current_state.id
+        p = self.transition[current_state_id]
+        next_state = np.random.choice(a=self.states, p=p)
+        return next_state
+
+    def run(self, sequence_length):
         """
         Given an an initial state and a 2d matrix of probabilites,
         returns a randomly generated, 1D array of a possible state sequence
@@ -24,11 +45,11 @@ class MarkovChain:
         """
 
         sequence = []
-        current_state = self.initial_state
+        current_state = self.get_initial_state()
+
         for i in range(sequence_length):
             sequence.append(current_state)
-            p = self.transition[current_state]
-            next_state = np.random.choice(a=self.states, p=p)
+            next_state = self.get_new_state(current_state)
             current_state = next_state
 
         return sequence
@@ -42,5 +63,5 @@ def main():
     print(m.generate(sequence_length=l))
 
 
-if __name__ == main():
+if __name__ == '__main__':
     main()

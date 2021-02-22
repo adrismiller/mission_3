@@ -6,6 +6,9 @@ class State:
     :param int id:  identifying number for a particular state
     """
 
-    def __init__(self, id):
+    def __init__(self, id, name):
         self.id = id
+        self.name = name
+
+
         #TODO: figure out art thing, and identifying characteristics of state
