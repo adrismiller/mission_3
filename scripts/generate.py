@@ -9,26 +9,28 @@ DEFAULT_FILE_TYPE = ".jpeg"
 DEFAULT_IMG_SIZE = 300
 
 # defaults for main method
-DEFAULT_OUTPUT_DIR = "outputs"
-DEFAULT_OUTPUT_FILENAME = 'example.jpeg'
+DEFAULT_OUTPUT_DIR = "examples"
+DEFAULT_OUTPUT_FILENAME = 'example5.jpeg'
 DEFAULT_IMG_DIMS = 20
 DEFAULT_SEQUENCE_LENGTH = 400
 
-PRIOR = [.15, .15, .15, .15, .15, .15, .02, .02, .02, .02, .02]
+PRIOR = [.13, .13, .13, .13, .13, .13, .01, .01, .01, .01, .01, 0.09, 0.08]
 DOG_NAMES = ["rosie", "callie", "venus", "bear", "jamie", "cooper", "winston", "bruno", "maisy",
-             "speedy", "bella"]
+             "speedy", "bella", "boomer", "sasha"]
 
-ROSIE_TRANSITION = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-CALLIE_TRANSITION = [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-VENUS_TRANSITION = [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-BEAR_TRANSITION = [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-JAMIE_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-COOPER_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0]
-WINSTON_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
-BRUNO_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]
-MAISY_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
-SPEEDY_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
-BELLA_TRANSITION = [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+ROSIE_TRANSITION = [0.0, 0.6, 0.0, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+CALLIE_TRANSITION = [0.6, 0.0, 0.0, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+VENUS_TRANSITION = [0.0, 0.2, 0.0, 0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4]
+BEAR_TRANSITION = [0.1, 0.1, 0.4, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.0]
+JAMIE_TRANSITION = [0.3, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.0]
+COOPER_TRANSITION = [0.1, 0.5, 0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0, 0.0, 0.1]
+WINSTON_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.1, 0.1, 0.1, 0.1, 0.1]
+BRUNO_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1]
+MAISY_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+SPEEDY_TRANSITION = [0.0, 0.1, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.0, 0.0, 0.5, 0.0, 0.1]
+BELLA_TRANSITION = [0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.0, 0.1, 0.5, 0.0, 0.1, 0.0]
+BOOMER_TRANSITION = [0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
+SASHA_TRANSITION = [0.1, 0.1, 0.1, 0.1, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0]
 
 
 class ImgGenerator:
@@ -122,7 +124,7 @@ def main():
     # transition matrix
     transition = [ROSIE_TRANSITION, CALLIE_TRANSITION, VENUS_TRANSITION, BEAR_TRANSITION, JAMIE_TRANSITION,
                   COOPER_TRANSITION, WINSTON_TRANSITION, BRUNO_TRANSITION, MAISY_TRANSITION, SPEEDY_TRANSITION,
-                  BELLA_TRANSITION]
+                  BELLA_TRANSITION, BOOMER_TRANSITION, SASHA_TRANSITION]
 
     all_states = []
 
