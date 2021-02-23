@@ -10,7 +10,7 @@ DEFAULT_IMG_SIZE = 300
 
 # defaults for main method
 DEFAULT_OUTPUT_DIR = "examples"
-DEFAULT_OUTPUT_FILENAME = 'example5.jpeg'
+DEFAULT_OUTPUT_FILENAME = 'example1.jpeg'
 DEFAULT_IMG_DIMS = 20
 DEFAULT_SEQUENCE_LENGTH = 400
 
@@ -81,11 +81,10 @@ class ImgGenerator:
 
     def generate_img(self):
         """
-        Generates an collage image based on Markov Chain and exports to appropriate output directory
+        Generates an collage image based on Markov Chain and exports to appropriate output directory.
 
-        :return:
+        :return: None
         """
-        # TODO : add check for dimensions of picture being good
 
         index = 0
         # retrieve a list of image objects that will be used
