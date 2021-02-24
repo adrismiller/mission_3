@@ -11,7 +11,7 @@ FILE_TYPE = ".jpeg"
 IMG_SIZE = 300
 
 # defaults for main method
-INPUT_DIR = "photos"
+INPUT_DIR = "assets"
 OUTPUT_DIR = "examples"
 OUTPUT_FILENAME = 'example.jpeg'
 IMG_DIMS = 20
@@ -62,7 +62,7 @@ class ImgGenerator:
         """
         Helper function for generate_img -- returns all the cv2 image objects for each state in the same order that
         they appear in self.all_states. Used in self.generate_img as a cache to retrieve image objects without having
-        to reread in image every time it reappears (images repeat often in this model)
+        to reread in image every time it reappears (images repeat often in this system)
 
         :return: im[] all_imgs: list of cv2 image objects
         """
@@ -92,6 +92,7 @@ class ImgGenerator:
         index = 0
         # retrieve a list of image objects that will be used
         all_imgs = self.get_all_imgs()
+        # initialize rows array
         all_rows = []
         # create num_rows rows
         for r in range(self.num_rows):
@@ -103,11 +104,11 @@ class ImgGenerator:
                 # retrieve the image corresponding to that states id
                 current_row.append(all_imgs[current_state_id])
                 index += 1
-            # create horizontal stack (eg row) of images
+            # create horizontal stack (row) of images
             current_row = np.hstack(current_row)
             all_rows.append(current_row)
 
-        # concatenate rows into finale image
+        # concatenate rows into final image
         img = np.vstack(all_rows)
 
         # export image to output_path
@@ -138,12 +139,12 @@ def main():
     if args.img_dims ** 2 != args.sequence_length:
         raise Exception("Invalid image dimension for sequence length")
 
-    # current working directory -- RUN FILE FROM SCRIPTS DIRECTORY
+    # current working directory 
     cwd = os.getcwd()
 
-    # fix to weird pipenv thing   #TODO : better fix?
+    # fix problem from running from different directory
     if "scripts" in cwd:
-        cwd = cwd[:-7]
+        cwd = cwd.replace("scripts", "")
 
     dog_names = DOG_NAMES
 

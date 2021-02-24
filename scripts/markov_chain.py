@@ -24,11 +24,9 @@ class MarkovChain:
         Helper function for self.run -- randomly selects an initial state based on the prior probability
         vector.
 
-        :return: State
+        :return: State      state randomly selected based on prior probability vector
         """
         return np.random.choice(a=self.states, p=self.prior)
-
-    # TODO: make this higher order ???
 
     def get_new_state(self, current_state):
         """
@@ -47,9 +45,9 @@ class MarkovChain:
 
     def run(self, sequence_length):
         """
-        Given a sequence_length, runs a Markov Chain from a randomly selected
+        Given a sequence_length, runs a Markov Chain from a randomly selected initial state.
 
-        :param int sequence_length:  length of markov sequence to be generates
+        :param int sequence_length:  length of markov sequence to be generated
         :return: State[] sequence:  sequence of states created by markov model
 
         """
