@@ -174,8 +174,6 @@ def main():
     i = ImgGenerator(order=sequence, input_dir=os.path.join(cwd, args.input_dir), output_path=output_path,
                      num_rows=args.img_dims,
                      num_cols=args.img_dims, all_states=all_states)
-
-    # print(output_path, args.img_dims, args.input_dir)
     i.generate_img()
 
 
