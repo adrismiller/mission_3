@@ -7,7 +7,7 @@ This project uses a first order Markov Chain to generate a slightly altered vers
     ```git clone https://github.com/adrismiller/mission_3.git ```
     
 2. Use pip to install necessary requirements for project. 
-    ``` pip install requirements.txt```
+    ``` pip install -r requirements.txt```
     
 3. Navigate to scripts directory through terminal  
     ``` cd scripts ``` 
