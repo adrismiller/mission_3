@@ -1,18 +1,21 @@
 import cv2
 import os
+import argparse
 import numpy as np
 
-from scripts import state, markov_chain
+from state import State
+from markov_chain import MarkovChain
 
 # defaults for ImgGenerator functions
-DEFAULT_FILE_TYPE = ".jpeg"
-DEFAULT_IMG_SIZE = 300
+FILE_TYPE = ".jpeg"
+IMG_SIZE = 300
 
 # defaults for main method
-DEFAULT_OUTPUT_DIR = "examples"
-DEFAULT_OUTPUT_FILENAME = 'example1.jpeg'
-DEFAULT_IMG_DIMS = 20
-DEFAULT_SEQUENCE_LENGTH = 400
+INPUT_DIR = "photos"
+OUTPUT_DIR = "examples"
+OUTPUT_FILENAME = 'example.jpeg'
+IMG_DIMS = 20
+SEQUENCE_LENGTH = 400
 
 PRIOR = [.13, .13, .13, .13, .13, .13, .01, .01, .01, .01, .01, 0.09, 0.08]
 DOG_NAMES = ["rosie", "callie", "venus", "bear", "jamie", "cooper", "winston", "bruno", "maisy",
@@ -68,12 +71,12 @@ class ImgGenerator:
         # for all possible states
         for s in self.all_states:
             # add file type to name of state object
-            filename = s.name + DEFAULT_FILE_TYPE
+            filename = s.name + FILE_TYPE
             # join path of input directory and filename for image
             img_path = os.path.join(self.input_dir, filename)
             # read image in and resize to default
             img = cv2.imread(img_path)
-            img = cv2.resize(img, (DEFAULT_IMG_SIZE, DEFAULT_IMG_SIZE))
+            img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
             # add image to all_imgs
             all_imgs.append(img)
 
@@ -112,8 +115,35 @@ class ImgGenerator:
 
 
 def main():
-    # current working directory minus "scripts"
-    cwd = os.getcwd()[:-7]
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-i', '--input_dir', action='store', type=str, default=INPUT_DIR,
+                        help=f'Specify name of input image directory --in_path=path. Default: {INPUT_DIR}',
+                        dest='input_dir')
+    parser.add_argument('-od', '--output_dir', action='store', type=str, default=OUTPUT_DIR,
+                        help=f'Specify name of output directory. Default: {OUTPUT_DIR}',
+                        dest='output_dir')
+    parser.add_argument('-o', '--output_file', action='store', type=str, default=OUTPUT_FILENAME,
+                        help=f'Specify name of output file. Default: {OUTPUT_FILENAME}',
+                        dest='output_file')
+    parser.add_argument('-s', '--sequence_length', action='store', type=int, default=SEQUENCE_LENGTH,
+                        help=f'Specify length of Markov Chain sequence to be created. Default: {SEQUENCE_LENGTH}',
+                        dest='sequence_length')
+    parser.add_argument('-d', '--img_dim', action='store', type=int, default=IMG_DIMS,
+                        help=f'Specify dimensions of square image to be created. Default: {IMG_DIMS}',
+                        dest='img_dims')
+
+    args = parser.parse_args()
+
+    if args.img_dims ** 2 != args.sequence_length:
+        raise Exception("Invalid image dimension for sequence length")
+
+    # current working directory -- RUN FILE FROM SCRIPTS DIRECTORY
+    cwd = os.getcwd()
+
+    # fix to weird pipenv thing   #TODO : better fix?
+    if "scripts" in cwd:
+        cwd = cwd[:-7]
 
     dog_names = DOG_NAMES
 
@@ -129,21 +159,23 @@ def main():
 
     # create State object for each dog in dog names
     for i, dog in enumerate(dog_names):
-        new_state = state.State(id=i, name=dog)
+        new_state = State(id=i, name=dog)
         all_states.append(new_state)
 
     # run markov chain using states, prior probability vector, and transition matrix
-    m = markov_chain.MarkovChain(states=all_states, prior=prior, transition=transition)
-    sequence = m.run(sequence_length=DEFAULT_SEQUENCE_LENGTH)
+    m = MarkovChain(states=all_states, prior=prior, transition=transition)
+    sequence = m.run(sequence_length=args.sequence_length)
 
     # create output_path variable
-    output_path = os.path.join(cwd, DEFAULT_OUTPUT_DIR)
-    output_path = os.path.join(output_path, DEFAULT_OUTPUT_FILENAME)
+    output_path = os.path.join(cwd, args.output_dir)
+    output_path = os.path.join(output_path, args.output_file)
 
     # generate image from markov chain, input images, and output_path
-    i = ImgGenerator(order=sequence, input_dir=os.path.join(cwd, "photos"), output_path=output_path,
-                     num_rows=DEFAULT_IMG_DIMS,
-                     num_cols=DEFAULT_IMG_DIMS, all_states=all_states)
+    i = ImgGenerator(order=sequence, input_dir=os.path.join(cwd, args.input_dir), output_path=output_path,
+                     num_rows=args.img_dims,
+                     num_cols=args.img_dims, all_states=all_states)
+
+    # print(output_path, args.img_dims, args.input_dir)
     i.generate_img()
 
 
