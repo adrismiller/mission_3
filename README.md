@@ -1,4 +1,4 @@
-# Mission 3: Art Generating Markov Chain 
+# Markov's Dogs 
 This project uses a first order Markov Chain to generate a slightly altered version of pixel art. Pixel art can be created using markov chains by selecting a random color for the first pixel, and then selecting the next pixel color based on some conditional probability. These pixel colors represent states in a markov chain. Instead of pixels, I used images of dogs as states to create a collage like picture similar in spirit to pixel art. To create the markov chain, an initial state (dog picture) is selected based on the prior probability vector. From there, the next state (dog picture) is chosen based on the transition matrix entry from the previous state. 
 ## Set Up and Running Code. 
 
