@@ -15,7 +15,6 @@ INPUT_DIR = "assets"
 OUTPUT_DIR = "examples"
 OUTPUT_FILENAME = 'example.jpeg'
 IMG_DIMS = 20
-SEQUENCE_LENGTH = 400
 
 PRIOR = [.13, .13, .13, .13, .13, .13, .01, .01, .01, .01, .01, 0.09, 0.08]
 DOG_NAMES = ["rosie", "callie", "venus", "bear", "jamie", "cooper", "winston", "bruno", "maisy",
@@ -47,7 +46,7 @@ class ImgGenerator:
     :param: str input_dir:  the directory containing input images
     :param str output_path: path that random image should be exported to
     :param int num_rows: number of rows that image will contain
-
+    :param int num_rows: number of columsn that image will contain
     """
 
     def __init__(self, all_states, order, input_dir, output_path, num_rows, num_cols):
@@ -127,19 +126,15 @@ def main():
     parser.add_argument('-o', '--output_file', action='store', type=str, default=OUTPUT_FILENAME,
                         help=f'Specify name of output file. Default: {OUTPUT_FILENAME}',
                         dest='output_file')
-    parser.add_argument('-s', '--sequence_length', action='store', type=int, default=SEQUENCE_LENGTH,
-                        help=f'Specify length of Markov Chain sequence to be created. Default: {SEQUENCE_LENGTH}',
-                        dest='sequence_length')
     parser.add_argument('-d', '--img_dim', action='store', type=int, default=IMG_DIMS,
                         help=f'Specify dimensions of square image to be created. Default: {IMG_DIMS}',
                         dest='img_dims')
 
     args = parser.parse_args()
 
-    if args.img_dims ** 2 != args.sequence_length:
-        raise Exception("Invalid image dimension for sequence length")
+    sequence_length = args.img_dims ** 2
 
-    # current working directory 
+    # current working directory
     cwd = os.getcwd()
 
     # fix problem from running from different directory
@@ -165,7 +160,7 @@ def main():
 
     # run markov chain using states, prior probability vector, and transition matrix
     m = MarkovChain(states=all_states, prior=prior, transition=transition)
-    sequence = m.run(sequence_length=args.sequence_length)
+    sequence = m.run(sequence_length=sequence_length)
 
     # create output_path variable
     output_path = os.path.join(cwd, args.output_dir)
